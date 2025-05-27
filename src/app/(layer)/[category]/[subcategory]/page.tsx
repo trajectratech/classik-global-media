@@ -1,6 +1,9 @@
 import { ProductsClient } from "@/components/products/product-client";
 import { IProduct } from "@/interface/product";
-import { getProductsByServiceGroupSubsetUrl } from "@/lib/contentful";
+import {
+  getAllCategories,
+  getProductsByServiceGroupSubsetUrl
+} from "@/lib/contentful";
 import { fixUrl, mapEntryToProduct } from "@/lib/utils";
 import Link from "next/link";
 
@@ -8,8 +11,11 @@ import Link from "next/link";
 
 import { Metadata } from "next";
 import { headers } from "next/headers";
+import { IServiceGroupSubset } from "@/interface/service-group";
 
 type Params = { params: { category: string; subcategory: string } };
+
+export const revalidate = 7200;
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const host = headers().get("host");
@@ -113,6 +119,16 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       "application/ld+json": JSON.stringify(jsonLd)
     }
   };
+}
+export async function generateStaticParams() {
+  const entries = await getAllCategories();
+
+  return entries.flatMap((category) =>
+    (category?.subsets || [])?.map((subset: IServiceGroupSubset) => ({
+      category: category?.url,
+      subcategory: subset?.slug
+    }))
+  );
 }
 
 export default async function SubcategoryPage(params: Params) {

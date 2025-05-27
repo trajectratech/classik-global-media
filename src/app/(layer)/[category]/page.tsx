@@ -1,11 +1,16 @@
 import { ProductsClient } from "@/components/products/product-client";
 import { IProduct } from "@/interface/product";
-import { client, getProductsByServiceGroupUrl } from "@/lib/contentful";
+import {
+  getProductsByServiceGroupUrl,
+  getServiceGroup
+} from "@/lib/contentful";
 import { fixUrl, mapEntryToProduct } from "@/lib/utils";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 
 type Params = { params: { category: string } };
+
+export const revalidate = 7200;
 
 export async function generateMetadata(params: Params): Promise<Metadata> {
   const host = headers().get("host");
@@ -87,7 +92,7 @@ export async function generateMetadata(params: Params): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const entries = await client.getEntries({ content_type: "serviceGroup" });
+  const entries = await getServiceGroup();
   return entries.items.map((item) => ({
     category: item.fields.url
   }));

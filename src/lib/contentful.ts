@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Entry, EntrySkeletonType, createClient } from "contentful";
 
 import {
-  IServiceGroup,
   IServiceGroupExtractedWithSubsets,
   IServiceGroupWithSubsets
 } from "@/interface/service-group";
@@ -17,10 +17,51 @@ export const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN!
 });
 
+export const getServiceGroup = async () => {
+  const entries = await client.getEntries({ content_type: "serviceGroup" });
+  return entries;
+};
+
+export const getServiceGroupSubsets = async () => {
+  const entries = await client.getEntries({
+    content_type: "serviceGroupSubsets"
+  });
+  return entries;
+};
+
+export async function getAllProducts() {
+  const entry = await client.getEntries({
+    content_type: "product",
+    limit: 200
+  });
+  return entry?.items?.map(mapEntryToProduct);
+}
+
 export async function getProductById(id: string) {
   const entry = await client.getEntry(id);
   return entry;
 }
+
+export const getAllCategories = async () => {
+  const serviceGroupRes = await client.getEntries({
+    content_type: "serviceGroup",
+    include: 2,
+    order: ["fields.order"]
+  });
+  return serviceGroupRes?.items?.map((service) => {
+    const { subsets, ...restFields } = service.fields;
+
+    return {
+      ...restFields,
+      subsets: isEntryArray(subsets)
+        ? subsets.map((subset) => subset.fields)
+        : [],
+      id: service.sys.id,
+      url: service.fields.url,
+      name: service.fields.name
+    };
+  }) as unknown as IServiceGroupExtractedWithSubsets[];
+};
 
 export async function getProductsByServiceGroupUrl(
   category: string,
@@ -292,12 +333,37 @@ export const getTeams = async () => {
 };
 
 export async function getPageSpecificData() {
-  const heroSlidesParent = await client.getEntries({
-    content_type: "heroSlides",
-    limit: 1000,
-    order: ["-sys.createdAt"]
-  });
+  const [
+    heroSlidesParent,
+    testimonialsParent,
+    parentServices,
+    featuredEntries,
+    sharedData
+  ] = await Promise.all([
+    client.getEntries({
+      content_type: "heroSlides",
+      limit: 1000,
+      order: ["-sys.createdAt"]
+    }),
+    client.getEntries({
+      content_type: "testimonials",
+      limit: 1000,
+      order: ["-sys.createdAt"]
+    }),
+    client.getEntries({
+      content_type: "services",
+      limit: 1
+    }),
+    client.getEntries({
+      content_type: "product",
+      "fields.isFeatured": true,
+      limit: 20,
+      order: ["-sys.createdAt"]
+    }),
+    getSharedData()
+  ]);
 
+  // Hero Slides
   const heroSlides = heroSlidesParent?.items?.map((x) => {
     const data = x?.fields as unknown as SlideDataParent;
     return {
@@ -307,31 +373,21 @@ export async function getPageSpecificData() {
       description: data?.description,
       image: data?.image?.fields
     };
-  }) as unknown as SlideData[];
+  }) as SlideData[];
 
-  const testimonialsParent = await client.getEntries({
-    content_type: "testimonials",
-    limit: 1000,
-    order: ["-sys.createdAt"]
-  });
-
+  // Testimonials
   const testimonials = testimonialsParent?.items?.map((x) => {
     const data = x?.fields as unknown as ITestimonialsParent;
-    const avatar = data?.avatar?.fields;
     return {
       name: data?.name,
       message: data?.message,
       role: data?.role,
       rating: data?.rating,
-      avatar
+      avatar: data?.avatar?.fields
     };
-  }) as unknown as ITestimonials[];
+  }) as ITestimonials[];
 
-  const parentServices = await client.getEntries({
-    content_type: "services",
-    limit: 1
-  });
-
+  // Services
   const services =
     parentServices?.items?.map((item) => {
       const data = item?.fields as unknown as {
@@ -347,10 +403,9 @@ export async function getPageSpecificData() {
       const normalizedServices: IService[] =
         _services?.map((x) => {
           const { thumbnail, ...rest } = x;
-
           return {
             ...rest,
-            thumbnail: thumbnail?.fields // unwrap thumbnail
+            thumbnail: thumbnail?.fields
           };
         }) ?? [];
 
@@ -363,19 +418,23 @@ export async function getPageSpecificData() {
 
   const extractedServices = services?.[0]?.services;
 
-  const featuredEntries = await client.getEntries({
-    content_type: "product",
-    "fields.isFeatured": true,
-    limit: 20,
-    order: ["-sys.createdAt"]
-  });
-
-  // Map and filter out null/undefined mapped results
+  // Featured Products
   const featuredProducts = featuredEntries.items
     .map(mapEntryToProduct)
     .filter((item): item is IProduct => item != null);
 
-  const serviceGroups = (await getSharedData()).serviceGroups || [];
+  // Grouped Products by Service Group
+  const serviceGroups = sharedData?.serviceGroups || [];
+  const serviceGroupIds = serviceGroups
+    .map((group) => group.id)
+    .filter(Boolean);
+
+  const serviceGroupEntries = await client.getEntries({
+    content_type: "product",
+    "fields.serviceGroup.sys.id[in]": serviceGroupIds.join(","),
+    limit: 1000,
+    order: ["-sys.createdAt"]
+  });
 
   const groupedProductsByServiceGroup: Record<
     string,
@@ -385,31 +444,28 @@ export async function getPageSpecificData() {
     }
   > = {};
 
-  await Promise.all(
-    serviceGroups
-      .filter((group) => group?.id && group?.main)
-      .map(async (group) => {
-        const res = await client.getEntries({
-          content_type: "product",
-          order: ["-sys.createdAt"],
-          "fields.serviceGroup.sys.id": group?.id,
-          // "fields.serviceGroup.sys.id[in]": group?.id,
-          limit: 10
-        });
+  for (const productEntry of serviceGroupEntries?.items) {
+    const mapped = mapEntryToProduct(productEntry);
+    if (!mapped) continue;
 
-        const products = res.items
-          .map(mapEntryToProduct)
-          .filter((product): product is IProduct => product != null);
+    const groupId = (productEntry.fields?.serviceGroup as Entry<any>)?.sys?.id;
 
-        // Only assign if we have products
-        if (products.length > 0) {
-          groupedProductsByServiceGroup[group?.id] = {
-            name: group?.main,
-            products
-          };
-        }
-      })
-  );
+    if (!groupId) continue;
+
+    const group = serviceGroups.find((g) => g.id === groupId);
+    if (!group) continue;
+
+    if (!groupedProductsByServiceGroup[groupId]) {
+      groupedProductsByServiceGroup[groupId] = {
+        name: group.main,
+        products: []
+      };
+    }
+
+    if (groupedProductsByServiceGroup[groupId].products.length < 10) {
+      groupedProductsByServiceGroup[groupId].products.push(mapped);
+    }
+  }
 
   const orderedGroupedProducts = serviceGroups
     .filter((group) => group?.id && groupedProductsByServiceGroup[group.id])
@@ -432,61 +488,66 @@ export async function fetchProductsByQuery(query: string) {
   // 1. Search by full-text query
   const matchedEntries = await client.getEntries({
     content_type: "product",
-    query, // full-text search
+    query,
     limit: 30,
     order: ["-sys.createdAt"]
   });
 
-  const _matchedEntries = matchedEntries?.items
+  const matched = matchedEntries?.items
     ?.map(mapEntryToProduct)
     .filter((product): product is IProduct => product != null);
 
-  // If no results, fallback to featured products
   if (matchedEntries.items.length === 0) {
+    // No matched results, get featured products as fallback
     const fallbackEntries = await client.getEntries({
       content_type: "product",
       "fields.isFeatured": true,
       limit: 10
     });
 
-    const _fallbackEntries = fallbackEntries.items
+    const related = fallbackEntries.items
       ?.map(mapEntryToProduct)
       .filter((product): product is IProduct => product != null);
 
     return {
-      matched: [] as unknown as IProduct[],
-      related: _fallbackEntries
+      matched: [],
+      related
     };
   }
 
-  // 2. Extract serviceGroup ID from first matched product
-  const firstServiceGroup = matchedEntries.items[0].fields
-    .serviceGroup as unknown as IServiceGroup;
+  // 2. Extract first matched product's serviceGroup ID safely
+  const firstServiceGroup = matchedEntries.items[0].fields.serviceGroup as
+    | { sys: { id: string } }
+    | undefined;
 
-  // const firstServiceGroupId =
-  // 	matchedEntries.items[0].fields.serviceGroup?.sys?.id;
   const firstServiceGroupId = firstServiceGroup?.sys?.id;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let relatedEntries: IProduct[] = [];
-
-  // 3. Fetch related products with same serviceGroup excluding matched ones
-  if (firstServiceGroupId) {
-    const res = await client.getEntries({
-      content_type: "product",
-      "fields.serviceGroup.sys.id": firstServiceGroupId,
-      "sys.id[nin]": matchedEntries?.items?.map((item) => item?.sys?.id),
-      limit: 30,
-      order: ["-sys.createdAt"]
-    });
-
-    relatedEntries = res?.items
-      ?.map(mapEntryToProduct)
-      .filter((product): product is IProduct => product != null);
+  if (!firstServiceGroupId) {
+    return {
+      matched,
+      related: []
+    };
   }
 
+  // 3. Fetch related products with same serviceGroup excluding matched ones in parallel with return
+  const excludeIds = matchedEntries.items.map((item) => item.sys.id);
+
+  const relatedEntriesPromise = client.getEntries({
+    content_type: "product",
+    "fields.serviceGroup.sys.id": firstServiceGroupId,
+    "sys.id[nin]": excludeIds,
+    limit: 30,
+    order: ["-sys.createdAt"]
+  });
+
+  const relatedEntries = await relatedEntriesPromise;
+
+  const related = relatedEntries.items
+    ?.map(mapEntryToProduct)
+    .filter((product): product is IProduct => product != null);
+
   return {
-    matched: _matchedEntries,
-    related: relatedEntries
+    matched,
+    related
   };
 }

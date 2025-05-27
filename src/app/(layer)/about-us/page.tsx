@@ -289,11 +289,11 @@ export default async function AboutUs() {
                   <div key={i} className="flex flex-col items-center">
                     {/* <div className="w-32 h-32 bg-golden rounded-full mb-4"></div> */}
                     <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-gray-200 shadow-sm">
-                      {fixUrl(team?.avatar?.file?.url) ? (
+                      {url ? (
                         <Image
                           height={56}
                           width={56}
-                          src={fixUrl(team?.avatar?.file?.url)}
+                          src={url}
                           alt={team.firstName}
                           className="object-cover w-full h-full"
                         />

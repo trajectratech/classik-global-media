@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, FC } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -13,6 +13,9 @@ import { motion, useMotionValue, useTransform } from "framer-motion";
 
 import { SlideData } from "@/interface/hero";
 import { fixUrl } from "@/lib/utils";
+
+const ArrowLeft = FiArrowLeft as FC;
+const ArrowRight = FiArrowRight as FC;
 
 export const HeroCarousel = ({ heroSlides }: { heroSlides: SlideData[] }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -62,13 +65,13 @@ export const HeroCarousel = ({ heroSlides }: { heroSlides: SlideData[] }) => {
         className="custom-prev absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white text-3xl transition-transform duration-300 hover:scale-125"
         aria-label="Previous Slide"
       >
-        <FiArrowLeft className="h-8 w-8" />
+        <ArrowLeft />
       </button>
       <button
         className="custom-next absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white text-3xl transition-transform duration-300 hover:scale-125"
         aria-label="Next Slide"
       >
-        <FiArrowRight className="h-8 w-8" />
+        <ArrowRight />
       </button>
 
       <Swiper

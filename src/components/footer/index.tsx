@@ -4,16 +4,8 @@ import Image from "next/image";
 import { SocialButtons } from "../social-buttons";
 import { FC } from "react";
 import { IFooter } from "@/interface/footer";
-import Link from "next/link";
 import { fixUrl } from "@/lib/utils";
 import PageLinks from "./page-links";
-
-const pageLinks = [
-  { name: "Featured", url: "#featured" },
-  { name: "About Us", url: "/about-us" },
-  { name: "Services", url: "#services" },
-  { name: "Privacy Policy", url: "/privacy" }
-];
 
 export const Footer: FC<IFooter> = ({
   socialLinks,

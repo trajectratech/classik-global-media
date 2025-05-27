@@ -1,10 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { client } from "@/lib/contentful";
 import { mapEntryToProduct } from "@/lib/utils";
 
 export async function GET(req: Request) {
   try {
-    const url = new URL(req.url);
+    // const url = new URL(req.url);
+    const url = (req as NextRequest).nextUrl as URL;
     const category = url.searchParams.get("category"); // serviceGroup URL slug
     const subcategory = url.searchParams.get("subcategory"); // serviceGroupSubset URL slug (optional)
     const page = parseInt(url.searchParams.get("page") || "1", 10);
