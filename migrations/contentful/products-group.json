@@ -1,0 +1,66 @@
+{
+  "name": "Product",
+  "description": "Individual product linked to a service group",
+  "displayField": "title",
+  "fields": [
+    {
+      "id": "title",
+      "name": "Title",
+      "type": "Symbol",
+      "required": true
+    },
+    {
+      "id": "description",
+      "name": "Description",
+      "type": "Text",
+      "required": true
+    },
+    {
+      "id": "price",
+      "name": "Price",
+      "type": "Number",
+      "required": true
+    },
+    {
+      "id": "quantity",
+      "name": "Quantity",
+      "type": "Integer",
+      "required": true
+    },
+    {
+      "id": "specification",
+      "name": "Specification",
+      "type": "Text",
+      "required": false
+    },
+    {
+      "id": "thumbnail",
+      "name": "Thumbnail Image",
+      "type": "Link",
+      "linkType": "Asset",
+      "required": false
+    },
+    {
+      "id": "images",
+      "name": "Images",
+      "type": "Array",
+      "items": {
+        "type": "Link",
+        "linkType": "Asset"
+      },
+      "required": false
+    },
+    {
+      "id": "serviceGroupSubset",
+      "name": "Service Group Subset",
+      "type": "Link",
+      "linkType": "Entry",
+      "validations": [
+        {
+          "linkContentType": ["serviceGroupSubset"]
+        }
+      ],
+      "required": true
+    }
+  ]
+}

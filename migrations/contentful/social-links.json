@@ -1,0 +1,39 @@
+{
+  "name": "Social Link",
+  "description": "Stores social media links with platform name, icon identifier, and profile URL.",
+  "fields": [
+    {
+      "id": "name",
+      "name": "Name",
+      "type": "Symbol",
+      "required": true
+    },
+    {
+      "id": "url",
+      "name": "URL",
+      "type": "Symbol",
+      "required": true,
+      "validations": [
+        {
+          "regexp": {
+            "pattern": "^(https?):\\/\\/",
+            "flags": null
+          },
+          "message": "Must be a valid URL starting with http or https"
+        }
+      ]
+    },
+    {
+      "id": "icon",
+      "name": "Icon Identifier",
+      "type": "Symbol",
+      "required": true,
+      "helpText": "Use the name of the icon from your frontend library (e.g., FaFacebook)"
+    },
+    {
+      "id": "order",
+      "name": "Order",
+      "type": "Integer"
+    }
+  ]
+}

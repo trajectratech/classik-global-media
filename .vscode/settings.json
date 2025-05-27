@@ -1,0 +1,33 @@
+{
+  // recommended settings for ESLint and Prettier
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.useFlatConfig": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always",
+    "source.fixAll": "always"
+    // "source.organizeImports": "always"
+  },
+  "[typescriptreact]": {
+    "editor.formatOnSave": true
+  },
+  "[javascript]": {
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.formatOnSave": true
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "files.exclude": {
+    "**/public": false // still visible, but not touched
+  },
+  "prettier.ignorePath": ".prettierignore",
+  "cSpell.words": [
+    "Classik Global Media"
+  ]
+}

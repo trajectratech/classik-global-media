@@ -1,0 +1,54 @@
+{
+  "name": "Featured Product",
+  "description": "Featured product with details and images",
+  "displayField": "title",
+  "fields": [
+    {
+      "id": "title",
+      "name": "Title",
+      "type": "Symbol",
+      "required": true
+    },
+    {
+      "id": "description",
+      "name": "Description",
+      "type": "Text",
+      "required": true
+    },
+    {
+      "id": "price",
+      "name": "Price",
+      "type": "Number",
+      "required": true
+    },
+    {
+      "id": "quantity",
+      "name": "Quantity",
+      "type": "Integer",
+      "required": true
+    },
+    {
+      "id": "specification",
+      "name": "Specification",
+      "type": "Text",
+      "required": true
+    },
+    {
+      "id": "thumbnail",
+      "name": "Thumbnail Image",
+      "type": "Link",
+      "linkType": "Asset",
+      "required": true
+    },
+    {
+      "id": "images",
+      "name": "Images",
+      "type": "Array",
+      "required": true,
+      "items": {
+        "type": "Link",
+        "linkType": "Asset"
+      }
+    }
+  ]
+}

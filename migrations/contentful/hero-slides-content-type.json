@@ -1,0 +1,57 @@
+{
+  "name": "Hero Slide",
+  "description": "Slide data for the homepage hero section including image, text, and CTA button.",
+  "displayField": "headline",
+  "fields": [
+    {
+      "id": "image",
+      "name": "Image",
+      "type": "Link",
+      "linkType": "Asset",
+      "required": true,
+      "localized": false
+    },
+    {
+      "id": "headline",
+      "name": "Headline",
+      "type": "Symbol",
+      "required": true,
+      "localized": false
+    },
+    {
+      "id": "description",
+      "name": "Description",
+      "type": "Text",
+      "required": true,
+      "localized": false
+    },
+    {
+      "id": "buttonLabel",
+      "name": "Button Label",
+      "type": "Symbol",
+      "required": true,
+      "localized": false
+    },
+    {
+      "id": "buttonLink",
+      "name": "Button Link",
+      "type": "Symbol",
+      "required": true,
+      "localized": false
+    },
+    {
+      "id": "order",
+      "name": "Order",
+      "type": "Integer",
+      "required": false,
+      "localized": false
+    },
+    {
+      "id": "isActive",
+      "name": "Is Active",
+      "type": "Boolean",
+      "required": false,
+      "localized": false
+    }
+  ]
+}

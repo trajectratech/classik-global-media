@@ -1,0 +1,44 @@
+{
+  "sys": {
+    "id": "serviceGroup",
+    "type": "ContentType",
+    "version": 0
+  },
+  "name": "Service Group",
+  "description": "Group of services with subsets, slug, display order, and expansion toggle.",
+  "displayField": "main",
+  "fields": [
+    {
+      "id": "main",
+      "name": "Main",
+      "type": "Symbol",
+      "required": true
+    },
+    {
+      "id": "url",
+      "name": "Slug",
+      "type": "Symbol",
+      "required": true,
+      "validations": [
+        {
+          "unique": true
+        },
+        {
+          "regexp": {
+            "pattern": "^[a-z0-9-]+$"
+          }
+        }
+      ]
+    },
+    {
+      "id": "order",
+      "name": "Order",
+      "type": "Integer"
+    },
+    {
+      "id": "isExpanded",
+      "name": "Is Expanded",
+      "type": "Boolean"
+    }
+  ]
+}
