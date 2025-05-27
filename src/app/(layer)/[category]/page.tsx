@@ -7,16 +7,14 @@ import { headers } from "next/headers";
 
 type Params = { params: { category: string } };
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+export async function generateMetadata(params: Params): Promise<Metadata> {
   const host = headers().get("host");
   const proto = headers().get("x-forwarded-proto") || "http";
   const baseUrl = `${proto}://${host}`;
-  // Build URL with query, city_id and page (only if page > 1)
-  const urlParams = new URLSearchParams();
 
   const dynamicUrl = `${baseUrl}`;
+  const category = params.params.category;
 
-  const { category } = params;
   const readableCategory = category
     .replace(/-/g, " ")
     .replace(/\b\w/g, (l) => l.toUpperCase());
@@ -95,9 +93,8 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function CategoryPage({ params }: { params: Params }) {
-  const { category } = params?.params;
-
+export default async function CategoryPage(params: Params) {
+  const category = params.params.category;
   const entries = await getProductsByServiceGroupUrl(category, { limit: 50 });
 
   const products: IProduct[] = entries?.map(mapEntryToProduct) ?? [];

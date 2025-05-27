@@ -69,8 +69,6 @@ export const generateMetadata = async () => {
   const host = headers().get("host");
   const proto = headers().get("x-forwarded-proto") || "http";
   const baseUrl = `${proto}://${host}`;
-  // Build URL with query, city_id and page (only if page > 1)
-  const urlParams = new URLSearchParams();
 
   const dynamicUrl = `${baseUrl}`;
 
@@ -161,7 +159,7 @@ export const generateMetadata = async () => {
       type: "website",
       images: [
         {
-          url: dynamicUrl + "logo.png",
+          url: dynamicUrl + "/logo.png",
           width: 1200,
           height: 630,
           alt: "Classik Global Media Team"
@@ -172,7 +170,7 @@ export const generateMetadata = async () => {
       card: "summary_large_image",
       title: "About Us | Classik Global Media",
       description: businessDescription,
-      images: [dynamicUrl + "logo.png"]
+      images: [dynamicUrl + "/logo.png"]
     },
     other: {
       "application/ld+json": JSON.stringify(jsonLd)
@@ -285,30 +283,33 @@ export default async function AboutUs() {
             {teams
               ?.slice()
               .sort((a, b) => Number(a.order) - Number(b.order))
-              .map((team, i) => (
-                <div key={i} className="flex flex-col items-center">
-                  {/* <div className="w-32 h-32 bg-golden rounded-full mb-4"></div> */}
-                  <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-gray-200 shadow-sm">
-                    {team?.avatar?.file?.url ? (
-                      <Image
-                        height={56}
-                        width={56}
-                        src={fixUrl(team?.avatar?.file?.url)}
-                        alt={team.firstName}
-                        className="object-cover w-full h-full"
-                      />
-                    ) : (
-                      <div className="bg-gray-300 w-full h-full flex items-center justify-center text-white text-xl font-semibold">
-                        {team?.firstName.charAt(0)}
-                      </div>
-                    )}
+              .map((team, i) => {
+                const url = fixUrl(team?.avatar?.file?.url);
+                return (
+                  <div key={i} className="flex flex-col items-center">
+                    {/* <div className="w-32 h-32 bg-golden rounded-full mb-4"></div> */}
+                    <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-gray-200 shadow-sm">
+                      {fixUrl(team?.avatar?.file?.url) ? (
+                        <Image
+                          height={56}
+                          width={56}
+                          src={fixUrl(team?.avatar?.file?.url)}
+                          alt={team.firstName}
+                          className="object-cover w-full h-full"
+                        />
+                      ) : (
+                        <div className="bg-gray-300 w-full h-full flex items-center justify-center text-white text-xl font-semibold">
+                          {team?.firstName.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                    <h4 className="text-xl font-semibold text-white">
+                      {team.firstName} {team.lastName}
+                    </h4>
+                    <p className="text-white/60 text-sm italic">{team?.role}</p>
                   </div>
-                  <h4 className="text-xl font-semibold text-white">
-                    {team.firstName} {team.lastName}
-                  </h4>
-                  <p className="text-white/60 text-sm italic">{team?.role}</p>
-                </div>
-              ))}
+                );
+              })}
           </div>
         </div>
       </section>

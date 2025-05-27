@@ -12,6 +12,7 @@ import NavbarDesktopDropdown from "../dropdown/desktop";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { NavbarProps } from "@/interface/navbar";
 import { Drawer } from "./drawer";
+import { fixUrl } from "@/lib/utils";
 
 export default function Navbar({
   logo,
@@ -33,17 +34,30 @@ export default function Navbar({
     }
   };
 
+  // useEffect(() => {
+  //   const targetId = sessionStorage.getItem("scrollTo");
+  //   if (targetId) {
+  //     setTimeout(() => {
+  //       const el = document.getElementById(targetId);
+  //       if (el) {
+  //         el.scrollIntoView({ behavior: "smooth" });
+  //         sessionStorage.removeItem("scrollTo");
+  //       }
+  //     }, 100);
+  //   }
+  // }, []);
+
   return (
     <nav
-      className="sticky top-0 z-50 bg-white shadow-md px-4 "
+      className="sticky top-0 z-50 bg-white shadow-md px-1 md:px-4 "
       style={{
         background: "linear-gradient(135deg, #fef9ef 0%, #f7d488 100%)"
       }}
     >
-      <div className="flex justify-between h-10 items-center w-full  m-1 mt-2">
+      <div className="mb-2 flex justify-between h-10 items-center w-full  m-1 mt-2 gap-2 ">
         <Link href="/" passHref prefetch>
           <Image
-            src={logo || "/logo.svg"}
+            src={fixUrl(logo) || "/logo.svg"}
             height={isMobile ? 40 : 45}
             width={isMobile ? 40 : 45}
             alt="Classik Global Media logo"
@@ -54,7 +68,7 @@ export default function Navbar({
 
         <form
           onSubmit={handleSearch}
-          className="hidden  md:flex flex-1 justify-center relative w-full max-w-md mt-2"
+          className="  md:flex flex-1 justify-center relative w-full max-w-md mt-2"
         >
           <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
             <Search className="h-4 w-4 text-almostblack" />

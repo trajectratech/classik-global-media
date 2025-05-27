@@ -8,6 +8,7 @@ import { X } from "lucide-react";
 import { SocialButtons } from "@/components/social-buttons";
 import NavbarMobileAccordion from "../accordion/mobile";
 import { DrawerProps, NavbarProps } from "@/interface/navbar";
+import { fixUrl } from "@/lib/utils";
 
 export const Drawer = ({
   menuOpen,
@@ -52,9 +53,9 @@ export const Drawer = ({
         {/* Header (Logo and Close Button) */}
         <div className="flex justify-between items-center p-4 shadow-md fixed top-0 left-0 right-0 z-50 bg-white">
           <div className="flex items-center">
-            <Link href="/" passHref>
+            <Link href="/" passHref prefetch>
               <Image
-                src={logo || "/logo.svg"}
+                src={fixUrl(logo) || "/logo.svg"}
                 height={40}
                 width={40}
                 alt="Classik logo"

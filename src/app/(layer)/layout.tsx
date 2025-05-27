@@ -11,8 +11,6 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = headers().get("host");
   const proto = headers().get("x-forwarded-proto") || "http";
   const baseUrl = `${proto}://${host}`;
-  // Build URL with query, city_id and page (only if page > 1)
-  const urlParams = new URLSearchParams();
 
   const dynamicUrl = `${baseUrl}`;
 

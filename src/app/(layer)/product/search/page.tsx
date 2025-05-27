@@ -21,8 +21,6 @@ export async function generateMetadata({
   const host = headers().get("host");
   const proto = headers().get("x-forwarded-proto") || "http";
   const baseUrl = `${proto}://${host}`;
-  // Build URL with query, city_id and page (only if page > 1)
-  const urlParams = new URLSearchParams();
 
   const dynamicUrl = `${baseUrl}`;
 
@@ -45,7 +43,7 @@ export async function generateMetadata({
       openGraph: {
         title: `No results for "${query}"`,
         description: `We couldn't find anything for "${query}" on Classik Global Media.`,
-        url: `${dynamicUrl}/search?q=${encodeURIComponent(query)}`
+        url: `${dynamicUrl}/product/search?q=${encodeURIComponent(query)}`
       },
       twitter: {
         card: "summary",
@@ -62,7 +60,7 @@ export async function generateMetadata({
     openGraph: {
       title: `Search results for "${query}"`,
       description: `Products related to "${query}" on Classik Global Media.`,
-      url: `${dynamicUrl}/search?q=${encodeURIComponent(query)}`
+      url: `${dynamicUrl}/product/search?q=${encodeURIComponent(query)}`
     },
     twitter: {
       card: "summary",

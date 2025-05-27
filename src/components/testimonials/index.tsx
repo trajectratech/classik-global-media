@@ -147,7 +147,6 @@ export const Testimonials = ({
 }: {
   testimonials: ITestimonials[];
 }) => {
-  console.log({ testimonials: testimonials[1] });
   return (
     <section
       id="testimonials"

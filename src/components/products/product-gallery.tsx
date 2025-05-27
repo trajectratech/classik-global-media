@@ -42,7 +42,6 @@ const ProductGallery = ({ images }: { images?: IContentfulImageField[] }) => {
       <div className="grid grid-cols-4 gap-2">
         {images?.map((image, index) => {
           const url = fixUrl(image?.fields?.file?.url);
-          console.log({ url });
           if (!url) return null;
 
           return (

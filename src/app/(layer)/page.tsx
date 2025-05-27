@@ -23,7 +23,7 @@ export default async function Home() {
   } = await getPageSpecificData();
 
   return (
-    <main className="min-h-screen  text-gray-900">
+    <main className="min-h-screen  text-gray-900" id="testimonials">
       <HeroWrapper heroSlides={heroSlides} />
 
       {/* PRODUCT SHOWCASE FEATURES */}

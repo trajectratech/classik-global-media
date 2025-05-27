@@ -5,6 +5,8 @@ import { SocialButtons } from "../social-buttons";
 import { FC } from "react";
 import { IFooter } from "@/interface/footer";
 import Link from "next/link";
+import { fixUrl } from "@/lib/utils";
+import PageLinks from "./page-links";
 
 const pageLinks = [
   { name: "Featured", url: "#featured" },
@@ -46,7 +48,7 @@ export const Footer: FC<IFooter> = ({
             <Image
               height={40}
               width={40}
-              src={logo || "/logo.svg"}
+              src={fixUrl(logo) || "/logo.svg"}
               alt="Logo"
               className="mb-2 w-16 h-16 object-contain"
             />
@@ -62,19 +64,7 @@ export const Footer: FC<IFooter> = ({
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 w-full max-w-4xl">
             <div>
               <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2">
-                {pageLinks.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      prefetch
-                      href={link.url}
-                      className="text-gray-400 hover:text-white transition"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <PageLinks />
             </div>
 
             {/* Social Media */}

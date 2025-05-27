@@ -15,8 +15,6 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const host = headers().get("host");
   const proto = headers().get("x-forwarded-proto") || "http";
   const baseUrl = `${proto}://${host}`;
-  // Build URL with query, city_id and page (only if page > 1)
-  const urlParams = new URLSearchParams();
 
   const dynamicUrl = `${baseUrl}`;
 
@@ -117,7 +115,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-export default async function SubcategoryPage({ params }: { params: Params }) {
+export default async function SubcategoryPage(params: Params) {
   const { category, subcategory } = params.params;
 
   const entries = await getProductsByServiceGroupSubsetUrl(

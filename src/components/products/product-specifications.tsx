@@ -5,7 +5,6 @@ const ProductSpecifications = ({
   description,
   specifications
 }: ProductSpecificationsProps) => {
-  console.log({ specifications });
   return (
     <Tabs defaultValue="description" className="w-full">
       <TabsList className="w-full grid grid-cols-2 mb-6">
