@@ -36,7 +36,7 @@ export const Footer: FC<IFooter> = ({
       <div className="relative z-10 ">
         <div className="flex flex-col md:flex-row justify-between items-start gap-8 ">
           {/* Logo & Address */}
-          <div className="flex flex-col items-center md:items-start text-center md:text-left">
+          <div className="flex flex-col items-start text-left">
             <Image
               height={40}
               width={40}

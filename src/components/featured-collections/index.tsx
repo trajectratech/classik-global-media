@@ -12,7 +12,9 @@ export const FeaturedCollections = ({ products }: { products: IProduct[] }) => {
           Featured Collections
         </h1>
 
-        <ProductSlider featuredProducts={products} />
+        <div className="featured-products w-full h-full">
+          <ProductSlider featuredProducts={products} />
+        </div>
       </div>
     </section>
   );
