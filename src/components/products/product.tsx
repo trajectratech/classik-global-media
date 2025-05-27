@@ -11,7 +11,7 @@ export const Product = ({ product }: { product: IProduct }) => {
       key={product.id}
       tabIndex={0}
       className="
-      relative flex-none w-72 bg-almostblack/90 text-white rounded-2xl shadow-md overflow-hidden snap-start cursor-pointer
+      relative flex-none w-full md:w-72 bg-almostblack/90 text-white rounded-2xl shadow-md overflow-hidden snap-start cursor-pointer
 			transform transition-transform duration-300 hover:scale-[1.03]
 			group-hover:opacity-40
 			hover:!opacity-100
