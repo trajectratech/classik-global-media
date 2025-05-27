@@ -2,17 +2,19 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { Menu, X, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
 import { motion } from "framer-motion";
 import { links } from "@/constants/generic";
-import NavbarDesktopDropdown from "../dropdown/desktop";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { NavbarProps } from "@/interface/navbar";
-import { Drawer } from "./drawer";
 import { fixUrl } from "@/lib/utils";
+
+import NavbarDesktopDropdown from "../dropdown/desktop";
+import { Drawer } from "./drawer";
 
 export default function Navbar({
   logo,

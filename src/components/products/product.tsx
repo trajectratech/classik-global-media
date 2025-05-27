@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { IProduct } from "@/interface/product";
 import { fixUrl } from "@/lib/utils";
+
 import { MainButton } from "../ui/main-button";
 
 export const Product = ({ product }: { product: IProduct }) => {
