@@ -103,7 +103,7 @@ export default function PhotographyVideoPage() {
 
   const videoCollection = [
     {
-      name: "Nice's Wedding",
+      name: `Nices Wedding`,
       videos: [
         {
           title: "Wedding Film Highlight",
