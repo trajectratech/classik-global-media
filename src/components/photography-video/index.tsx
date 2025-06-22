@@ -139,7 +139,7 @@ export default function PhotographyVideoPage() {
       <section className="text-center mb-12">
         <h1 className="text-5xl font-bold mb-4">Photography & Videography</h1>
         <p className="text-lg text-muted-foreground mb-6">
-          Capturing life's moments — in stillness and in motion.
+          Capturing life&#39;s moments — in stillness and in motion.
         </p>
         <div className="flex justify-center gap-4">
           <Button className="flex gap-2 items-center text-base" size="lg">
