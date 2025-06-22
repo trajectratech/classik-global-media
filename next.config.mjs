@@ -13,6 +13,18 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "images.ctfassets.net"
+      },
+      {
+        protocol: "https",
+        hostname: "source.unsplash.com"
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com"
+      },
+      {
+        protocol: "https",
+        hostname: "docs.material-tailwind.com"
       }
     ]
   }

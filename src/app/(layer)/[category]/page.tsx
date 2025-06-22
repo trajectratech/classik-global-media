@@ -1,3 +1,4 @@
+import PhotographyVideoPage from "@/components/photography-video";
 import { ProductsClient } from "@/components/products/product-client";
 import { IProduct } from "@/interface/product";
 import {
@@ -104,13 +105,20 @@ export default async function CategoryPage(params: Params) {
 
   const products: IProduct[] = entries?.map(mapEntryToProduct) ?? [];
 
+  const photographyVideo = "photography-video";
+
   return (
     <div className="bg-white px-4 mt-2">
-      <h1 className="text-xl sm:text-2xl font-serif font-extrabold text-golden mb-10 tracking-wide drop-shadow-lg">
-        Category: {category.replaceAll("-", " ")}
-      </h1>
-
-      <ProductsClient initialProducts={products} category={category} />
+      {category?.toLowerCase() === photographyVideo ? (
+        <PhotographyVideoPage />
+      ) : (
+        <>
+          <h1 className="text-xl sm:text-2xl font-serif font-extrabold text-golden mb-10 tracking-wide drop-shadow-lg">
+            Category: {category.replaceAll("-", " ")}
+          </h1>
+          <ProductsClient initialProducts={products} category={category} />
+        </>
+      )}
     </div>
   );
 }
