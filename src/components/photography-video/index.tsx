@@ -6,6 +6,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Mail, CalendarCheck } from "lucide-react";
 
 import { PhotoGrid } from "./photogrid";
+import { MediaHeading } from "./media-heading.tsx";
+import { FadeIn } from "@/animation/fade-in";
 
 const images = [
   {
@@ -136,36 +138,44 @@ export default function PhotographyVideoPage() {
 
   return (
     <main className="py-8">
-      <section className="text-center mb-12">
-        <h1 className="text-5xl font-bold mb-4">Photography & Videography</h1>
-        <p className="text-lg text-muted-foreground mb-6">
-          Capturing life&#39;s moments — in stillness and in motion.
-        </p>
-        <div className="flex justify-center gap-4">
-          <Button className="flex gap-2 items-center text-base" size="lg">
-            <Mail className="w-5 h-5" /> Contact Me
+      <section className="text-center mb-12 px-4 py-6">
+        {/* <section className="text-center mb-12 px-4 py-12 rounded-xl bg-gradient-to-b from-white via-[#fff9e6] to-[#fff0c2] shadow-md"> */}
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-golden via-[#ff7e5f] to-[#000000] leading-tight">
+          Photography & Videography
+        </h1>
+
+        <FadeIn>
+          <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-xl mx-auto">
+            Capturing life&#39;s moments — in stillness and in motion.
+          </p>
+        </FadeIn>
+
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-5">
+          <Button className="flex items-center justify-center gap-2 text-sm sm:text-base px-4 sm:px-6 py-2.5 sm:py-3 font-semibold bg-gradient-to-r from-golden to-[#ff7e5f] text-black hover:brightness-110 shadow-md hover:shadow-lg transition w-full sm:w-auto">
+            <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
+            Contact Me
           </Button>
           <Button
-            className="flex gap-2 items-center text-base"
-            size="lg"
             variant="outline"
+            className="flex items-center justify-center gap-2 text-sm sm:text-base px-4 sm:px-6 py-2.5 sm:py-3 font-semibold border-2 border-golden text-[#000] hover:bg-[#fff7d1] transition w-full sm:w-auto"
           >
-            <CalendarCheck className="w-5 h-5" /> Book a Session
+            <CalendarCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+            Book a Session
           </Button>
         </div>
       </section>
 
       <Tabs defaultValue="photos" className="w-full">
-        <TabsList className="relative flex justify-center gap-6 mb-12 mx-auto rounded-full bg-gray-100 dark:bg-gray-900 p-1 shadow-inner max-w-fit">
+        <TabsList className="relative flex justify-center gap-4 mb-12 mx-auto rounded-full bg-gray-100 dark:bg-gray-900 p-1 shadow-inner w-full max-w-md overflow-x-auto overflow-y-hidden">
           <TabsTrigger
             value="photos"
-            className="relative px-6 py-2 rounded-full text-base font-medium transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg dark:data-[state=active]:bg-gray-800 data-[state=active]:text-black dark:data-[state=active]:text-white"
+            className="relative px-4 sm:px-6 py-2 rounded-full text-sm sm:text-base font-medium transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg dark:data-[state=active]:bg-gray-800 data-[state=active]:text-black dark:data-[state=active]:text-white"
           >
             Photography
           </TabsTrigger>
           <TabsTrigger
             value="videos"
-            className="relative px-6 py-2 rounded-full text-base font-medium transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg dark:data-[state=active]:bg-gray-800 data-[state=active]:text-black dark:data-[state=active]:text-white"
+            className="relative px-4 sm:px-6 py-2 rounded-full text-sm sm:text-base font-medium transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg dark:data-[state=active]:bg-gray-800 data-[state=active]:text-black dark:data-[state=active]:text-white"
           >
             Videography
           </TabsTrigger>
@@ -174,9 +184,10 @@ export default function PhotographyVideoPage() {
         <TabsContent value="photos">
           {photoCollections.map((collection, idx) => (
             <div key={idx} className="mb-12">
-              <h2 className="text-2xl font-bold mb-6 text-center">
-                {collection.name}
-              </h2>
+              <FadeIn>
+                <MediaHeading title={collection.name} />
+              </FadeIn>
+
               <PhotoGrid
                 images={
                   collection?.images?.length > 0 ? collection?.images : images
@@ -189,9 +200,10 @@ export default function PhotographyVideoPage() {
         <TabsContent value="videos">
           {videoCollection?.map((video, idx) => (
             <div key={idx} className="mb-12">
-              <h2 className="text-2xl font-bold mb-6 text-center">
-                {video.name}
-              </h2>
+              <FadeIn>
+                <MediaHeading title={video.name} />
+              </FadeIn>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {video.videos.map((video, idx) => (
                   <Card
@@ -217,22 +229,37 @@ export default function PhotographyVideoPage() {
         </TabsContent>
       </Tabs>
 
-      <section className="mt-16 text-center">
-        <h2 className="text-3xl font-bold mb-4">
-          Ready to Create Something Beautiful?
-        </h2>
-        <p className="text-muted-foreground mb-6">
-          Whether it’s your big day, a creative project, or a corporate event —
-          I’d love to tell your story.
-        </p>
-        <div className="flex justify-center gap-4">
-          <Button size="lg" className="text-base">
-            Book Now
-          </Button>
-          <Button size="lg" variant="outline" className="text-base">
-            Contact Me
-          </Button>
-        </div>
+      <section className="mt-20 text-center px-4">
+        <FadeIn>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#ffc414] via-[#ff7e5f] to-[#000000]">
+            Ready to Create Something Beautiful?
+          </h2>
+        </FadeIn>
+
+        <FadeIn>
+          <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+            Whether it’s your big day, a creative project, or a corporate event
+            — I’d love to tell your story.
+          </p>
+        </FadeIn>
+
+        <FadeIn>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Button
+              size="lg"
+              className="text-sm sm:text-base px-5 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-[#ffc414] to-[#ff7e5f] text-black font-semibold hover:brightness-110 shadow hover:shadow-md transition"
+            >
+              Book Now
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-sm sm:text-base px-5 py-2.5 sm:px-6 sm:py-3 border-2 border-[#ffc414] text-black hover:bg-[#fff7d1] transition"
+            >
+              Contact Me
+            </Button>
+          </div>
+        </FadeIn>
       </section>
     </main>
   );
