@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { SocialButtons } from "../social-buttons";
 import { FC } from "react";
 import { IFooter } from "@/interface/footer";
 import { fixUrl } from "@/lib/utils";
 import PageLinks from "./page-links";
+import { SocialButtons } from "../social-buttons";
 
 export const Footer: FC<IFooter> = ({
   socialLinks,

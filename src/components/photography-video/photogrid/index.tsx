@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import NextImage from "next/image";
-
-export const blurDataUrl = "https://placehold.co/600x400/png";
+import { blurDataUrl } from "@/constants/generic";
+import { IContentfulImage } from "@/interface/site-settings";
+import { fixUrl } from "@/lib/utils";
 
 function distributeToColumns<T>(array: T[], columnCount: number): T[][] {
   const columns: T[][] = Array.from({ length: columnCount }, () => []);
@@ -13,19 +14,14 @@ function distributeToColumns<T>(array: T[], columnCount: number): T[][] {
   return columns;
 }
 
-export interface Image {
-  src: string;
-  alt?: string;
-}
-
-export const PhotoGrid = ({ images }: { images: Image[] }) => {
+export const PhotoGrid = ({ images }: { images: IContentfulImage[] }) => {
   const imageColumns = distributeToColumns(images, 4);
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
 
   const slides = images.map((img) => ({
-    src: img.src,
-    alt: img.alt || "gallery-photo"
+    src: fixUrl(img.file.url),
+    alt: img.title || "gallery-photo"
   }));
 
   // Preload images
@@ -59,8 +55,8 @@ export const PhotoGrid = ({ images }: { images: Image[] }) => {
                     alt={image.alt || "gallery-photo"}
                   /> */}
                   <NextImage
-                    src={image.src}
-                    alt={image.alt || "gallery-photo"}
+                    src={fixUrl(image.file.url)}
+                    alt={image.title || "gallery-photo"}
                     width={500}
                     height={400}
                     placeholder={blurDataUrl ? "blur" : "empty"}

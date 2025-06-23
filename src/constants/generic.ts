@@ -11,6 +11,8 @@ export const links = [
 
 export const blurDataUrl = "https://placehold.co/600x400/png";
 
+export const photographyVideo = "photography-video";
+
 export const sections = [
   {
     main: "Art/Craft",

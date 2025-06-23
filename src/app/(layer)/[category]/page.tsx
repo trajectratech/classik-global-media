@@ -1,15 +1,20 @@
 import PhotographyVideoPage from "@/components/photography-video";
 import { ProductsClient } from "@/components/products/product-client";
+import { IMediaResponse } from "@/interface/media";
 import { IProduct } from "@/interface/product";
+import { ISiteSettings } from "@/interface/site-settings";
 import {
+  getMediaByServiceGroupUrl,
   getProductsByServiceGroupUrl,
-  getServiceGroup
+  getServiceGroup,
+  getSharedData
 } from "@/lib/contentful";
 import { fixUrl, mapEntryToProduct } from "@/lib/utils";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 
 type Params = { params: { category: string } };
+const photographyVideo = "photography-video";
 
 export const revalidate = 7200;
 
@@ -101,16 +106,37 @@ export async function generateStaticParams() {
 
 export default async function CategoryPage(params: Params) {
   const category = params.params.category;
-  const entries = await getProductsByServiceGroupUrl(category, { limit: 50 });
+  let products: IProduct[] = [];
+  let media: IMediaResponse | null = null;
+  let email = "classikglobalmedia@gmail.com";
+  let whatsapp = "249027786284";
+  if (category?.toLowerCase() !== photographyVideo) {
+    const productEntries = await getProductsByServiceGroupUrl(category, {
+      limit: 50
+    });
 
-  const products: IProduct[] = entries?.map(mapEntryToProduct) ?? [];
+    products = productEntries?.map(mapEntryToProduct) ?? [];
+  } else {
+    media = await getMediaByServiceGroupUrl(category, {
+      limit: 100
+    });
 
-  const photographyVideo = "photography-video";
+    const data = await getSharedData();
+
+    const { siteSettings } = data;
+
+    const { emailAddress, whatsAppNumber } =
+      siteSettings as unknown as ISiteSettings;
+
+    email = emailAddress;
+    whatsapp = whatsAppNumber;
+  }
+  //bg-[#f8f8f8]
 
   return (
-    <div className="bg-white px-4 mt-2">
+    <div className="bg-gradient-to-b from-[#fff0c2] via-[#fff9e6] to-[#fff0c2]  px-4">
       {category?.toLowerCase() === photographyVideo ? (
-        <PhotographyVideoPage />
+        <PhotographyVideoPage media={media} email={email} whatsapp={whatsapp} />
       ) : (
         <>
           <h1 className="text-xl sm:text-2xl font-serif font-extrabold text-golden mb-10 tracking-wide drop-shadow-lg">

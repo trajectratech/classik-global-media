@@ -11,6 +11,10 @@ import { IContentfulService, IService } from "@/interface/services";
 import { ITestimonials, ITestimonialsParent } from "@/interface/testimonials";
 import { SlideData, SlideDataParent } from "@/interface/hero";
 import { ITeamData, ITeamParent } from "@/interface/teams";
+import { IContentfulImageField } from "@/interface/site-settings";
+import { IMediaResponse } from "@/interface/media";
+
+export const photographyVideo = "photography-video";
 
 export const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID!,
@@ -73,7 +77,7 @@ export async function getProductsByServiceGroupUrl(
     "fields.url": category
   });
 
-  if (!serviceGroupEntries.items.length) return [];
+  if (!serviceGroupEntries?.items?.length) return [];
 
   const serviceGroupId = serviceGroupEntries?.items?.[0]?.sys.id;
 
@@ -311,27 +315,6 @@ export async function getSharedData() {
   return { siteSettings, serviceGroups };
 }
 
-export const getTeams = async () => {
-  const teamsParent = await client.getEntries({
-    content_type: "teams",
-    limit: 1000,
-    order: ["-sys.createdAt"]
-  });
-
-  const teams = teamsParent?.items?.map((x) => {
-    const data = x?.fields as unknown as ITeamParent;
-    return {
-      firstName: data?.firstName,
-      lastName: data?.lastName,
-      role: data?.role,
-      order: data?.order,
-      avatar: data?.avatar?.fields
-    };
-  }) as unknown as ITeamData[];
-
-  return teams;
-};
-
 export async function getPageSpecificData() {
   const [
     heroSlidesParent,
@@ -550,4 +533,76 @@ export async function fetchProductsByQuery(query: string) {
     matched,
     related
   };
+}
+export async function getMediaByServiceGroupUrl(
+  category: string,
+  options: { limit: number; offset?: number }
+) {
+  try {
+    // Step 1: Fetch the service group by category URL
+    const serviceGroupEntries = await client.getEntries({
+      content_type: "serviceGroup",
+      "fields.url": category
+    });
+
+    const serviceGroup = serviceGroupEntries?.items?.[0];
+    const serviceGroupId = serviceGroup?.sys?.id;
+
+    if (!serviceGroupId) return null;
+
+    const commonQueryParams = {
+      "fields.serviceGroup.sys.id": serviceGroupId,
+      limit: options.limit,
+      skip: options.offset ?? 0
+    };
+
+    // Step 2: Fetch photos and videos simultaneously
+    const [photoResponse, videoResponse] = await Promise.all([
+      client.getEntries({
+        content_type: "photos",
+        ...commonQueryParams
+      }),
+      client.getEntries({
+        content_type: "videos",
+        ...commonQueryParams
+      })
+    ]);
+
+    type IVideoMediaItem = {
+      fields: {
+        heading?: string;
+        videos?: IContentfulImageField[];
+      };
+    };
+
+    type IPhotoMediaItem = {
+      fields: {
+        heading?: string;
+        photos?: IContentfulImageField[];
+      };
+    };
+
+    const photos = (photoResponse?.items ?? []).map(
+      (item: IPhotoMediaItem) => ({
+        heading: item.fields.heading ?? "Untitled",
+        photos: Array.isArray(item.fields.photos)
+          ? item.fields.photos.map((photoItem) => photoItem.fields ?? photoItem)
+          : []
+      })
+    );
+
+    const videos = (videoResponse?.items ?? []).map(
+      (item: IVideoMediaItem) => ({
+        heading: item.fields.heading ?? "Untitled",
+        videos: Array.isArray(item.fields.videos)
+          ? item.fields.videos.map((videoItem) => videoItem.fields ?? videoItem)
+          : []
+      })
+    );
+
+    return { photos, videos } as IMediaResponse;
+  } catch (error) {
+    console.error("Error fetching media by service group URL:", error);
+    return null;
+  }
 }
