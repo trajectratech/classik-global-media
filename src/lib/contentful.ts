@@ -606,3 +606,24 @@ export async function getMediaByServiceGroupUrl(
     return null;
   }
 }
+
+export const getTeams = async () => {
+  const teamsParent = await client.getEntries({
+    content_type: "teams",
+    limit: 1000,
+    order: ["-sys.createdAt"]
+  });
+
+  const teams = teamsParent?.items?.map((x) => {
+    const data = x?.fields as unknown as ITeamParent;
+    return {
+      firstName: data?.firstName,
+      lastName: data?.lastName,
+      role: data?.role,
+      order: data?.order,
+      avatar: data?.avatar?.fields
+    };
+  }) as unknown as ITeamData[];
+
+  return teams;
+};
