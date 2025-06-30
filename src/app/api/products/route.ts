@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { client } from "@/lib/contentful";
 import { mapEntryToProduct } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   try {
     // const url = new URL(req.url);

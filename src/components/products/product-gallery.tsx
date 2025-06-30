@@ -25,12 +25,12 @@ const ProductGallery = ({ images }: { images?: IContentfulImageField[] }) => {
   return (
     <div className="w-full">
       {/* Main Image */}
-      <div className="relative aspect-square rounded-lg overflow-hidden mb-4 bg-secondary">
+      <div className="relative aspect-square rounded-lg overflow-hidden mb-4 bg-transparent">
         <Image
           fill
           src={activeUrl}
           alt={images?.[activeImage]?.fields?.description || "Product Image"}
-          className="w-full h-full object-cover transition-opacity duration-500"
+          className="w-full h-full object-contain object-center transition-opacity duration-500"
           blurDataURL={blurDataUrl}
           placeholder="blur"
           loading="eager"

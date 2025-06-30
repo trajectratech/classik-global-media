@@ -1,11 +1,13 @@
+import { headers } from "next/headers";
+import { Suspense } from "react";
+import { Metadata } from "next";
+
 import { Footer } from "@/components/footer";
 import { ISiteSettings } from "@/interface/site-settings";
 import Navbar from "@/navigations/navbar";
 
-import { getSharedData } from "@/lib/contentful";
-import { Metadata } from "next";
 import { fixUrl } from "@/lib/utils";
-import { headers } from "next/headers";
+import { getCachedSharedData } from "@/lib/shared";
 
 export async function generateMetadata(): Promise<Metadata> {
   const host = headers().get("host");
@@ -14,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const dynamicUrl = `${baseUrl}`;
 
-  const data = await getSharedData();
+  const data = await getCachedSharedData();
   const { siteSettings } = data;
 
   const {
@@ -127,7 +129,7 @@ export default async function LayerLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const data = await getSharedData();
+  const data = await getCachedSharedData();
 
   const { siteSettings, serviceGroups } = data;
 
@@ -162,12 +164,14 @@ export default async function LayerLayout({
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar {...navbarProps} />
+      <Suspense fallback={null}>
+        <Navbar {...navbarProps} />
+      </Suspense>
+
       <main className="flex-grow max-w-[1440px] w-full mx-auto">
         {children}
       </main>
       <Footer {...props} />
-      {/* <CursorTrail /> */}
     </div>
   );
 }

@@ -238,7 +238,7 @@ export default function PhotographyVideoPage({
     <main className="py-8">
       <section className="text-center mb-12 px-4 py-6">
         {/* <section className="text-center mb-12 px-4 py-12 rounded-xl bg-gradient-to-b from-white via-[#fff9e6] to-[#fff0c2] shadow-md"> */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-golden via-[#ff7e5f] to-[#000000] leading-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-golden via-[#000000] to-[#000000] leading-tight">
           Photography & Videography
         </h1>
 
@@ -250,7 +250,7 @@ export default function PhotographyVideoPage({
 
         <div className="flex flex-wrap justify-center gap-3 sm:gap-5">
           <Link href={mailto}>
-            <Button className="flex items-center justify-center gap-2 text-sm sm:text-base px-4 sm:px-6 py-2.5 sm:py-3 font-semibold bg-gradient-to-r from-golden to-[#ff7e5f] text-black hover:brightness-110 shadow-md hover:shadow-lg transition w-full sm:w-auto">
+            <Button className="flex items-center justify-center gap-2 text-sm sm:text-base px-4 sm:px-6 py-2.5 sm:py-3 font-semibold bg-gradient-to-r from-black to-golden text-white hover:brightness-110 shadow-md hover:shadow-lg transition w-full sm:w-auto">
               <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
               Contact Me
             </Button>
@@ -268,16 +268,16 @@ export default function PhotographyVideoPage({
       </section>
 
       <Tabs defaultValue="photos" className="w-full">
-        <TabsList className="relative flex justify-center gap-4 mb-12 mx-auto rounded-full bg-gray-100 dark:bg-gray-900 p-1 shadow-inner w-full max-w-md overflow-x-auto overflow-y-hidden">
+        <TabsList className="relative flex justify-center gap-4 mb-12 mx-auto rounded-full bg-gray-100 dark:bg-gray-900 p-0 shadow-inner w-full max-w-md overflow-x-auto overflow-y-hidden">
           <TabsTrigger
             value="photos"
-            className="relative px-4 sm:px-6 py-2 rounded-full text-sm sm:text-base font-medium transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg dark:data-[state=active]:bg-gray-800 data-[state=active]:text-black dark:data-[state=active]:text-white"
+            className="flex-1 text-center px-4 py-2 rounded-full text-sm sm:text-base font-medium transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg dark:data-[state=active]:bg-gray-800 data-[state=active]:text-black dark:data-[state=active]:text-white"
           >
             Photography
           </TabsTrigger>
           <TabsTrigger
             value="videos"
-            className="relative px-4 sm:px-6 py-2 rounded-full text-sm sm:text-base font-medium transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg dark:data-[state=active]:bg-gray-800 data-[state=active]:text-black dark:data-[state=active]:text-white"
+            className="flex-1 text-center px-4 py-2 rounded-full text-sm sm:text-base font-medium transition-all duration-300 data-[state=active]:bg-white data-[state=active]:shadow-lg dark:data-[state=active]:bg-gray-800 data-[state=active]:text-black dark:data-[state=active]:text-white"
           >
             Videography
           </TabsTrigger>
@@ -392,7 +392,7 @@ export default function PhotographyVideoPage({
 
       <section className="mt-20 text-center px-4">
         <FadeIn>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#ffc414] via-[#ff7e5f] to-[#000000]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-black via-slate-500 to-golden">
             Ready to Create Something Beautiful?
           </h2>
         </FadeIn>
@@ -400,7 +400,7 @@ export default function PhotographyVideoPage({
         <FadeIn>
           <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
             Whether it’s your big day, a creative project, or a corporate event
-            — I’d love to tell your story.
+            — We’d love to tell your story.
           </p>
         </FadeIn>
 
@@ -409,7 +409,7 @@ export default function PhotographyVideoPage({
             <Link href={whatsappLink} target="_blank" rel="noopener noreferrer">
               <Button
                 size="lg"
-                className="text-sm sm:text-base px-5 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-[#ffc414] to-[#ff7e5f] text-black font-semibold hover:brightness-110 shadow hover:shadow-md transition"
+                className="text-sm sm:text-base px-5 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-black to-golden text-white font-semibold hover:brightness-110 shadow hover:shadow-md transition"
               >
                 Book Now
               </Button>
@@ -418,7 +418,7 @@ export default function PhotographyVideoPage({
               <Button
                 size="lg"
                 variant="outline"
-                className="text-sm sm:text-base px-5 py-2.5 sm:px-6 sm:py-3 border-2 border-[#ffc414] text-black hover:bg-[#fff7d1] transition"
+                className="text-sm sm:text-base px-5 py-2.5 sm:px-6 sm:py-3 border-2 border-golden text-black hover:bg-[#fff7d1] transition"
               >
                 Contact Me
               </Button>

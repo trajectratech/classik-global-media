@@ -32,3 +32,9 @@ export function mapEntryToProduct(entry: any): IProduct {
     serviceGroupSubSet: entry?.fields?.serviceGroupSet
   };
 }
+export const getWhatsAppLink = (product: IProduct, whatsapp: string) => {
+  const productUrl = `${process.env.BASE_URL || "https://www.classikglobalmedia.com"}/product/${product.id}`;
+  const message = `Hi, I'm interested in "${product.title}" (₦${product.price}). Here's the link: ${productUrl}`;
+  const encodedMessage = encodeURIComponent(message);
+  return `https://wa.me/${whatsapp}?text=${encodedMessage}`;
+};

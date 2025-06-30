@@ -4,7 +4,13 @@ import { IProduct } from "@/interface/product";
 
 import ProductSlider from "./slider";
 
-export const FeaturedCollections = ({ products }: { products: IProduct[] }) => {
+export const FeaturedCollections = ({
+  products,
+  whatsapp
+}: {
+  products: IProduct[];
+  whatsapp: string;
+}) => {
   return (
     <section className="bg-gray-100 py-12" id="featured">
       <div className="container mx-auto px-4">
@@ -13,7 +19,7 @@ export const FeaturedCollections = ({ products }: { products: IProduct[] }) => {
         </h1>
 
         <div className="featured-products w-full h-full">
-          <ProductSlider featuredProducts={products} />
+          <ProductSlider featuredProducts={products} whatsapp={whatsapp} />
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 import { ISiteSettings } from "@/interface/site-settings";
 import { ITeamData } from "@/interface/teams";
-import { getSharedData, getTeams } from "@/lib/contentful";
+import { getTeams } from "@/lib/contentful";
+import { getCachedSharedData } from "@/lib/shared";
 import { fixUrl } from "@/lib/utils";
 import { headers } from "next/headers";
 import Image from "next/image";
@@ -74,7 +75,7 @@ export const generateMetadata = async () => {
 
   const teams: ITeamData[] = await getTeams();
 
-  const data = await getSharedData();
+  const data = await getCachedSharedData();
   const { siteSettings } = data;
 
   const { socialLinks, businessDescription } =
@@ -325,7 +326,7 @@ export default async function AboutUs() {
         </p>
         <a
           href="mailto:classikglobalmedia@gmail.com"
-          className="inline-block bg-golden text-almostblack font-medium px-6 py-3 rounded-full hover:bg-golden/80 transition"
+          className="inline-block bg-white text-almostblack font-medium px-6 py-3 rounded-full hover:bg-white/80 transition"
         >
           Contact Us
         </a>

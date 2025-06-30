@@ -3,10 +3,12 @@ import { Product } from "./product";
 
 export const Products = ({
   heading,
-  products
+  products,
+  whatsapp
 }: {
   heading: string;
   products: IProduct[];
+  whatsapp: string;
 }) => {
   return (
     <div className="py-3 bg-white text-black">
@@ -22,7 +24,11 @@ export const Products = ({
               Array.isArray(products) &&
               products?.length > 0 &&
               products?.map((product) => (
-                <Product key={product.id} product={product} />
+                <Product
+                  key={product.id}
+                  product={product}
+                  whatsapp={whatsapp}
+                />
               ))}
           </div>
         </section>

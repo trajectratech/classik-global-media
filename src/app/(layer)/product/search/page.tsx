@@ -5,7 +5,9 @@ import { Product } from "@/components/products/product";
 import { NoResults } from "./components/no-result.tsx";
 import Link from "next/link";
 import { Metadata } from "next";
-import { headers } from "next/headers.js";
+import { headers } from "next/headers";
+import { getCachedSharedData } from "@/lib/shared";
+import { ISiteSettings } from "@/interface/site-settings";
 
 interface SearchPageProps {
   searchParams: { q?: string };
@@ -88,9 +90,19 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   const relatedProducts: IProduct[] = related;
 
-  if (products.length === 0) {
+  if (products?.length === 0) {
     return <NoResults query={query} />;
   }
+
+  let whatsapp = "249027786284";
+
+  const data = await getCachedSharedData();
+
+  const { siteSettings } = data;
+
+  const { whatsAppNumber } = siteSettings as unknown as ISiteSettings;
+
+  whatsapp = whatsAppNumber;
 
   return (
     <div className="px-4 mb-5">
@@ -101,7 +113,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {products?.map((product) => (
-              <Product key={product?.id} product={product} />
+              <Product
+                key={product?.id}
+                product={product}
+                whatsapp={whatsapp}
+              />
             ))}
           </div>
         </>
@@ -114,7 +130,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {relatedProducts?.map((product) => (
-              <Product key={product?.id} product={product} />
+              <Product
+                key={product?.id}
+                product={product}
+                whatsapp={whatsapp}
+              />
             ))}
           </div>
         </>

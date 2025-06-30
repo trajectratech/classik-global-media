@@ -1,9 +1,15 @@
 import { IProduct } from "@/interface/product";
-import { fixUrl } from "@/lib/utils";
+import { fixUrl, getWhatsAppLink } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-export function ProductCard({ product }: { product: IProduct }) {
+export function ProductCard({
+  product,
+  whatsapp
+}: {
+  product: IProduct;
+  whatsapp: string;
+}) {
   return (
     <div
       className="flex flex-col bg-white rounded-2xl shadow-md overflow-hidden
@@ -58,9 +64,17 @@ export function ProductCard({ product }: { product: IProduct }) {
 
         {/* Buttons */}
         <div className="mt-5 flex gap-3">
-          <button className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl font-medium transition">
-            Buy Now
-          </button>
+          <Link
+            href={getWhatsAppLink(product, whatsapp)}
+            target="_blank"
+            rel="noopener noreferrer"
+            prefetch
+          >
+            <button className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl font-medium transition">
+              Buy Now
+            </button>
+          </Link>
+
           <Link href={`/product/${product.id}`} passHref prefetch>
             <button className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 rounded-xl font-medium transition">
               More Info

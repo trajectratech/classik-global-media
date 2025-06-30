@@ -9,6 +9,7 @@ import { Product } from "./product";
 interface ProductsClientProps {
   initialProducts: IProduct[];
   category: string;
+  whatsapp: string;
   subcategory?: string;
 }
 
@@ -17,7 +18,8 @@ const PAGE_SIZE = 50;
 export function ProductsClient({
   initialProducts,
   category,
-  subcategory
+  subcategory,
+  whatsapp
 }: ProductsClientProps) {
   const [products, setProducts] = useState<IProduct[]>(initialProducts);
   const [page, setPage] = useState(1);
@@ -97,7 +99,7 @@ export function ProductsClient({
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {products.map((product) => (
-          <Product key={product.id} product={product} />
+          <Product key={product.id} product={product} whatsapp={whatsapp} />
         ))}
 
         {loading &&

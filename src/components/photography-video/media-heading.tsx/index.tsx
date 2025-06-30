@@ -2,7 +2,7 @@ export const MediaHeading = ({ title }: { title: string }) => {
   return (
     <div className="flex justify-center mb-6 ">
       <div className="relative inline-block text-center group cursor-pointer my-10">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#ffc414] to-[#000000]">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-black to-golden">
           {title}
         </h2>
 

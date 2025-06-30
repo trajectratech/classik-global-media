@@ -6,12 +6,13 @@ import { ISiteSettings } from "@/interface/site-settings";
 import {
   getMediaByServiceGroupUrl,
   getProductsByServiceGroupUrl,
-  getServiceGroup,
-  getSharedData
+  getServiceGroup
 } from "@/lib/contentful";
+import { getCachedSharedData } from "@/lib/shared";
 import { fixUrl, mapEntryToProduct } from "@/lib/utils";
 import { Metadata } from "next";
 import { headers } from "next/headers";
+import Link from "next/link";
 
 type Params = { params: { category: string } };
 const photographyVideo = "photography-video";
@@ -121,7 +122,7 @@ export default async function CategoryPage(params: Params) {
       limit: 100
     });
 
-    const data = await getSharedData();
+    const data = await getCachedSharedData();
 
     const { siteSettings } = data;
 
@@ -139,10 +140,26 @@ export default async function CategoryPage(params: Params) {
         <PhotographyVideoPage media={media} email={email} whatsapp={whatsapp} />
       ) : (
         <>
-          <h1 className="text-xl sm:text-2xl font-serif font-extrabold text-golden mb-10 tracking-wide drop-shadow-lg">
-            Category: {category.replaceAll("-", " ")}
-          </h1>
-          <ProductsClient initialProducts={products} category={category} />
+          <nav
+            aria-label="Breadcrumb"
+            className="pt-4 mb-2 text-sm text-gray-600"
+          >
+            <ol className="inline-flex items-center space-x-1 space-y-4">
+              <li>
+                <Link
+                  href={`/${category}`}
+                  className="text-golden hover:underline"
+                >
+                  {category.replace(/-/g, " ")}
+                </Link>
+              </li>
+            </ol>
+          </nav>
+          <ProductsClient
+            initialProducts={products}
+            category={category}
+            whatsapp={whatsapp}
+          />
         </>
       )}
     </div>

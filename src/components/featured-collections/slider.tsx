@@ -2,9 +2,11 @@ import { IProduct } from "@/interface/product";
 import { Product } from "../products/product";
 
 export default function ProductSliderSSR({
-  featuredProducts
+  featuredProducts,
+  whatsapp
 }: {
   featuredProducts: IProduct[];
+  whatsapp: string;
 }) {
   return (
     <div className="relative">
@@ -14,7 +16,7 @@ export default function ProductSliderSSR({
         id="featured-slide"
       >
         {featuredProducts?.map((product) => (
-          <Product key={product.id} product={product} />
+          <Product key={product.id} product={product} whatsapp={whatsapp} />
         ))}
       </div>
     </div>

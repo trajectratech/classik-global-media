@@ -1,10 +1,19 @@
 import { Metadata } from "next";
 
 import ProductCatalog from "@/components/products/product-catalog";
-import { getProductById } from "@/lib/contentful";
+import { getAllProducts, getProductById } from "@/lib/contentful";
 import { fixUrl, mapEntryToProduct } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
+import { ISiteSettings } from "@/interface/site-settings";
+import { getCachedSharedData } from "@/lib/shared";
+
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const entries = await getAllProducts();
+  return entries.map((entry) => ({ id: entry.id }));
+}
 
 export async function generateMetadata({
   params
@@ -122,16 +131,20 @@ export default async function ProductPage({
 }) {
   const { id } = params;
 
-  // Fetch the single product by id from Contentful
   const entry = await getProductById(id);
 
   if (!entry) return notFound();
 
   const product = mapEntryToProduct(entry);
 
+  const data = await getCachedSharedData();
+
+  const { siteSettings } = data;
+  const { whatsAppNumber } = siteSettings as unknown as ISiteSettings;
+
   return (
     <div>
-      <ProductCatalog product={product} />
+      <ProductCatalog product={product} whatsapp={whatsAppNumber} />
     </div>
   );
 }

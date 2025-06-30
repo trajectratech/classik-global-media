@@ -72,6 +72,7 @@ export const Drawer = ({
         <div className="flex-1 overflow-y-auto pt-20 pb-20">
           <NavbarMobileAccordion
             serviceGroupsWithSubsets={serviceGroupsWithSubsets}
+            setMenuOpen={setMenuOpen}
           />
 
           {/* Links List */}
@@ -82,6 +83,7 @@ export const Drawer = ({
                 href={href}
                 passHref
                 className="text-black text-lg font-semibold"
+                onClick={() => setMenuOpen(false)}
               >
                 {name}
               </Link>

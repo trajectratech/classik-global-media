@@ -2,11 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { IProduct } from "@/interface/product";
-import { fixUrl } from "@/lib/utils";
+import { fixUrl, getWhatsAppLink } from "@/lib/utils";
 
 import { MainButton } from "../ui/main-button";
 
-export const Product = ({ product }: { product: IProduct }) => {
+export const Product = ({
+  product,
+  whatsapp
+}: {
+  product: IProduct;
+  whatsapp: string;
+}) => {
   return (
     <div
       key={product.id}
@@ -68,7 +74,12 @@ export const Product = ({ product }: { product: IProduct }) => {
 
         {/* Buttons */}
         <div className="mt-4 flex gap-2">
-          <Link href={`/product/${product.id}`} passHref prefetch>
+          <Link
+            href={getWhatsAppLink(product, whatsapp)}
+            target="_blank"
+            rel="noopener noreferrer"
+            prefetch
+          >
             <MainButton title="Buy Now" />
           </Link>
 

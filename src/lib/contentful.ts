@@ -13,6 +13,7 @@ import { SlideData, SlideDataParent } from "@/interface/hero";
 import { ITeamData, ITeamParent } from "@/interface/teams";
 import { IContentfulImageField } from "@/interface/site-settings";
 import { IMediaResponse } from "@/interface/media";
+import { getCachedSharedData } from "./shared";
 
 export const photographyVideo = "photography-video";
 
@@ -343,7 +344,7 @@ export async function getPageSpecificData() {
       limit: 20,
       order: ["-sys.createdAt"]
     }),
-    getSharedData()
+    getCachedSharedData()
   ]);
 
   // Hero Slides

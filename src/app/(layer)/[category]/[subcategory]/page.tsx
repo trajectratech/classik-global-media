@@ -12,6 +12,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import { IServiceGroupSubset } from "@/interface/service-group";
+import { getCachedSharedData } from "@/lib/shared";
+import { ISiteSettings } from "@/interface/site-settings";
 
 type Params = { params: { category: string; subcategory: string } };
 
@@ -140,6 +142,16 @@ export default async function SubcategoryPage(params: Params) {
     { limit: 50 }
   );
 
+  let whatsapp = "249027786284";
+
+  const data = await getCachedSharedData();
+
+  const { siteSettings } = data;
+
+  const { whatsAppNumber } = siteSettings as unknown as ISiteSettings;
+
+  whatsapp = whatsAppNumber;
+
   const products: IProduct[] = entries?.map(mapEntryToProduct) ?? [];
 
   return (
@@ -164,6 +176,7 @@ export default async function SubcategoryPage(params: Params) {
         initialProducts={products}
         category={category}
         subcategory={subcategory}
+        whatsapp={whatsapp}
       />
     </div>
   );
